@@ -42,7 +42,6 @@ class Ghost
         templateEngine = new MustacheTemplateEngine(
             @args.template
         )
-        console.log templateEngine
 
         renderer = new PhantomPageRenderer(
             templateEngine,
@@ -51,6 +50,8 @@ class Ghost
         )
 
         renderer.renderTo "#{@args.output}/#{@basename invoiceFile, ".json"}"
+
+        phantom.exit 0
 
     # Display usage information and exit with errorcode 1
     # Optionally an error message may be provided as first argument, which will
