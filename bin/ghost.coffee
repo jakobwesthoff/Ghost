@@ -1,6 +1,7 @@
 # Main entrypoint of the ghost html invoice generator. This file is executed
 # directly using the phantomjs runner.
 
+# Load the fs module for further usage within the application
 fs = this.require "fs"
 
 # The default behaviour of the require function is overridden in order to allow
@@ -93,3 +94,25 @@ require.paths = [
 # our own require routine.
 phantom.require = this.require
 this.require = require
+
+# Add the top-level projects dir as well as the node_modules directory in there
+# to the require paths
+#
+# This allows easy inclusion of the application modules as well as third party
+# modules installed through npm
+# 
+# Remember we are adding to the head of the array therefore the searchorder is
+# reversed
+require.paths.unshift "#{phantom.libraryPath}/../node_modules"
+require.paths.unshift "#{phantom.libraryPath}/.."
+
+# Require and execute the ghost application entry point from the lib directory
+try
+    Ghost = require( "lib/ghost" )
+    app = new Ghost()
+    app.run()
+catch e
+    console.log("Fatal error during execution: \n#{JSON.stringify(e)}")
+    phantom.exit 255
+
+phantom.exit 0
