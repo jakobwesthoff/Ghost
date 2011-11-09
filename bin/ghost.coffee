@@ -13,19 +13,22 @@ require = ( name ) ->
     if not srcfile?
         throw "Module #{name} could not be found"
 
-    srcpath = require.dirname srcfile
-    
-    src = fs.read srcfile
-    
-    require.paths.unshift srcpath
+    if not require.cache[srcfile]?
+        srcpath = require.dirname srcfile
+        
+        src = fs.read srcfile
+        
+        require.paths.unshift srcpath
 
-    modulefn = new Function( "exports", "module", src )
-    module = { exports: {} }
-    modulefn.call {}, module.exports, module
+        modulefn = new Function( "exports", "module", src )
+        module = { exports: {} }
+        modulefn.call {}, module.exports, module
 
-    require.paths.shift
+        require.paths.shift
 
-    return module.exports
+        require.cache[srcfile] = module.exports
+
+    return require.cache[srcfile]
 
 # Try to locate a filename/filepath within all require search paths.
 require.locate = ( name ) ->
@@ -85,6 +88,11 @@ require.dirname = ( filepath ) ->
         0,
         position
     )
+
+# The cache is used to store modules which have been included once. Therefore
+# they are only evaluated one time eventhough they might be required multiple
+# times. This is done in compliance with the CommonJS module specification
+require.cache = {}
 
 # Initialize the search path for modules using the directory of the invoked
 # entry point script aka. this one.
