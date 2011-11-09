@@ -122,7 +122,5 @@ try
     app = new Ghost()
     app.run()
 catch e
-    console.log("Fatal error during execution: \n#{JSON.stringify(e)}")
+    console.log "Fatal error: #{JSON.stringify(e)}"
     phantom.exit 255
-
-phantom.exit 0
