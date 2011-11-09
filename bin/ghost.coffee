@@ -93,5 +93,3 @@ require.paths = [
 # our own require routine.
 phantom.require = this.require
 this.require = require
-
-console.log( require("foobar") )
