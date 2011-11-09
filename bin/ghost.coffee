@@ -78,12 +78,12 @@ require.lookupDirectory = ( path, name ) ->
 # Return the dirname of a given file, by simply cutting away the last part
 # before the directory seperator
 require.dirname = ( filepath ) ->
-    position = filepath.lastIndexOf fs.seperator
+    position = filepath.lastIndexOf fs.separator
     return "." if position is -1
 
     filepath.substring(
         0,
-        position - 1
+        position
     )
 
 # Initialize the search path for modules using the directory of the invoked
