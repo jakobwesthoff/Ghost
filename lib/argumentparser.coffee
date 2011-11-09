@@ -60,15 +60,15 @@ mapOptions = () ->
 # defintions.
 # An option defintion always needs to have a 'long' and a 'short' key. It may
 # furthermore include a key name 'data' specifying if it is a value option
-# indicating, that it needs to be followed by a data value.  Furthermore an
-# 'optional' key may be specified in order to signal the parser that the given
-# option is not enforced, but optional. The value of the 'optional' key is
+# indicating, that it needs to be followed by a data value. Furthermore a key
+# named 'default' may be specified in order to signal the parser that the given
+# option is not enforced, but optional. The value of the 'default' key is
 # taken as the default value in case the option is not specified:
 #   [
 #     {
 #       long: 'help',
 #       short: 'h',
-#       optional: true
+#       default: false
 #     },
 #     {
 #       long: 'source',
@@ -88,8 +88,8 @@ class ArgumentParser
 
         # Preinitialize all optional options
         for option in @options
-            if option.optional?
-                this[option.long] = this[option.short] = option.optional
+            if option.default?
+                this[option.long] = this[option.short] = option.default
 
         parse.call this, mapOptions.call this
 
