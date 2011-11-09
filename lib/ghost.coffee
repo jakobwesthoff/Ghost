@@ -49,7 +49,7 @@ class Ghost
             'a4'
         )
 
-        renderer.renderTo "#{@arguments.output}/#{@basename invoiceFile}"
+        renderer.renderTo "#{@arguments.output}/#{@basename invoiceFile ".json"}"
 
     # Display usage information and exit with errorcode 1
     # Optionally an error message may be provided as first argument, which will
