@@ -1,0 +1,14 @@
+{
+  "author": "Jakob Westhoff <jakob@westhoffswelt.de> (http://westhoffswelt.de)",
+  "name": "Ghost",
+  "description": "A phantomjs based HTML to PDF renderer for invoices",
+  "version": "0.0.1",
+  "homepage": "http://westhoffswelt.de",
+  "repository": {
+    "url": ""
+  },
+  "engines": {
+    "phantomjs": "1.3.0"
+  },
+  "dependencies": {}
+}
