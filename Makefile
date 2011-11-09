@@ -14,15 +14,15 @@ bin:
 
 .PHONY: clean-bin
 clean-bin:
-	rm bin/*.js
+	@find bin/ -iname "*.js"|while read i; do rm "$$i"; done
 
 .PHONY: lib
 lib:
-	@for i in lib/*.coffee; do make $$(dirname "$$i")/$$(basename "$$i" .coffee).js; done
+	@find lib/ -iname "*.coffee"|while read i; do make $$(dirname "$$i")/$$(basename "$$i" .coffee).js; done
 
 .PHONY: clean-lib
 clean-lib:
-	rm lib/*.js
+	@find lib/ -iname "*.js"|while read i; do rm "$$i"; done
 
 .SUFFIXES: .js .coffee
 .coffee.js:
