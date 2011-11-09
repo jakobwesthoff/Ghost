@@ -6,7 +6,7 @@ fs = require "fs"
 class PhantomPageRenderer
     # Construct a new renderer taking a template engine instance, the invoice
     # context to render as well as the pagesize for the rendering as arguments
-    construtor: ( @engine, @context, @pagesize, @border = 0 ) ->
+    constructor: ( @engine, @context, @pagesize, @border = 0 ) ->
         @page = WebPage.create()
         @page.paperSize =
             format: @pagesize
@@ -23,4 +23,10 @@ class PhantomPageRenderer
     # filepath as a PDF file
     renderTo: ( filepath ) ->
         @page.content = @engine.process @context
-        @page.render "#{filepath}.pdf"
+        setTimeout(
+            () => @page.render "#{filepath}.pdf",
+            4000
+        )
+
+# Export public symbols
+module.exports = PhantomPageRenderer

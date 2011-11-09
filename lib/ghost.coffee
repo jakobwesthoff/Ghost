@@ -10,11 +10,11 @@ fs = require "fs"
 # application object.
 class Ghost
     constructor: ->
-        @arguments = null
+        @args = null
 
     run: () ->
         try
-            @arguments = new ArgumentParser([
+            @args = new ArgumentParser([
                 { short: 'h', long: 'help', default: false },
                 { short: 't', long: 'template', data: true },
                 { short: 'o', long: 'output', data: true, default: fs.workingDirectory }
@@ -22,42 +22,43 @@ class Ghost
         catch e
             @usage "Error: #{e}"
 
-        if @arguments.help is true
+        if @args.help is true
             @usage()
 
-        if @arguments._.length isnt 1
+        if @args._.length isnt 1
             @usage "Error: You need to provide an invoice definition as argument"
 
         try
-            invoiceFile = fs.absolute @arguments._[0]
+            invoiceFile = fs.absolute @args._[0]
             invoice = JSON.parse(
                 fs.read invoiceFile
             )
         catch e
-            @usage "Error: invoice definition '#{@arguments._[0]}' could not be parsed: #{e}"
+            @usage "Error: invoice definition '#{@args._[0]}' could not be parsed: #{e}"
 
-        if not fs.isFile @arguments.template
-            throw "Given template '#{@arguments.template}' can not be read."
+        if not fs.isFile @args.template
+            throw "Given template '#{@args.template}' can not be read."
             
         templateEngine = new MustacheTemplateEngine(
-            @arguments.template
+            @args.template
         )
+        console.log templateEngine
 
         renderer = new PhantomPageRenderer(
             templateEngine,
             invoice,
-            'a4'
+            'A4'
         )
 
-        renderer.renderTo "#{@arguments.output}/#{@basename invoiceFile ".json"}"
+        renderer.renderTo "#{@args.output}/#{@basename invoiceFile, ".json"}"
 
     # Display usage information and exit with errorcode 1
     # Optionally an error message may be provided as first argument, which will
     # be displayed between the application name and the usage information
     usage: ( msg = null ) ->
         console.log "Ghost - HTML to PDF invoice creator"
-        console.log ""
         console.log msg if msg?
+        console.log ""
         console.log "Usage:"
         console.log "  ./ghost [-t/--template <templatefile>] <invoice.json>"
         console.log ""

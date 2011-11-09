@@ -15,3 +15,6 @@ class MustacheTemplateEngine
     # definition) and return the result
     process: ( context ) ->
         Mustache.to_html @template, context
+
+# Export public symbols
+module.exports = MustacheTemplateEngine

@@ -13,19 +13,19 @@
 # short properties to provide a faster lookup
 parse = ( options ) ->
     # Clone the given arguments for working on them
-    arguments = JSON.parse(
+    args = JSON.parse(
         JSON.stringify(
-            @arguments
+            @args
         )
     )
     
-    while arguments.length > 0
-        current = arguments.shift()
+    while args.length > 0
+        current = args.shift()
         if current.indexOf( "-" ) isnt 0 or current is "--"
-            # We reached the end of options the following arguments are
+            # We reached the end of options the following args are
             # parameters
-            arguments.unshift current if current isnt "--"
-            @_ = arguments
+            args.unshift current if current isnt "--"
+            @_ = args
             break
 
         # Long or short option?
@@ -40,9 +40,9 @@ parse = ( options ) ->
             throw "Unknown option '#{identifier}' detected."
 
         if options[identifier].data? is true
-            if arguments.length is 0
+            if args.length is 0
                 throw "Data argument for option '#{identifier}' expected"
-            this[options[identifier].long] = this[options[identifier].short] = arguments.shift()
+            this[options[identifier].long] = this[options[identifier].short] = args.shift()
         else
             this[options[identifier].long] = this[options[identifier].short] = true
 
@@ -80,7 +80,7 @@ mapOptions = () ->
 class ArgumentParser
     constructor: ( @options ) ->
         # Make a deep copy of all the arguments given to process
-        @arguments = JSON.parse(
+        @args = JSON.parse(
             JSON.stringify(
                 phantom.args
             )
