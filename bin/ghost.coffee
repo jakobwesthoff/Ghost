@@ -40,10 +40,12 @@ require.locate = ( name ) ->
 #
 # The checking includes with and without .js extension
 require.lookupFile = ( path, name ) ->
-    if fs.isFile "#{path}/#{name}"
-        return fs.absolute "#{path}/#{name}"
-    if fs.isFile "#{path}/#{name}.js"
-        return fs.absolute "#{path}/#{name}.js"
+    filename = fs.absolute "#{path}/#{name}"
+
+    if fs.isFile filename
+        return filename
+    if fs.isFile "#{filename}.js"
+        return "#{filename}.js"
     return null
 
 # Search for given name inside the given path by checking all the usual
@@ -52,7 +54,7 @@ require.lookupFile = ( path, name ) ->
 # If a directory with the given name exists it will be searched for in index.js
 # as well as an package.json
 require.lookupDirectory = ( path, name ) ->
-    directory = "#{path}/#{name}"
+    directory = fs.absolute "#{path}/#{name}"
     
     if not fs.isDirectory directory
         return null
@@ -68,8 +70,8 @@ require.lookupDirectory = ( path, name ) ->
         if not package.main?
             return null
 
-        if fs.isFile "#{directory}/#{package.main}"
-            return "#{directory}/#{package.main}"
+        lookedupMain = require.lookupFile( directory, package.main )
+        return lookedupMain if lookedupMain?
 
     return null
 
