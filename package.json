@@ -10,5 +10,7 @@
   "engines": {
     "phantomjs": "1.3.0"
   },
-  "dependencies": {}
+  "dependencies": {
+      "mustache": "0.3.x"
+  }
 }
