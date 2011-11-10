@@ -10,7 +10,7 @@ deps:
 
 .PHONY: bin
 bin:
-	@for i in bin/*.coffee; do make $$(dirname "$$i")/$$(basename "$$i" .coffee).js; done
+	@for i in bin/*.coffee; do make --no-print-directory $$(dirname "$$i")/$$(basename "$$i" .coffee).js; done
 
 .PHONY: clean-bin
 clean-bin:
@@ -18,7 +18,7 @@ clean-bin:
 
 .PHONY: lib
 lib:
-	@find lib/ -iname "*.coffee"|while read i; do make $$(dirname "$$i")/$$(basename "$$i" .coffee).js; done
+	@find lib/ -iname "*.coffee"|while read i; do make --no-print-directory $$(dirname "$$i")/$$(basename "$$i" .coffee).js; done
 
 .PHONY: clean-lib
 clean-lib:
