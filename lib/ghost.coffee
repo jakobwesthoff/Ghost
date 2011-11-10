@@ -37,8 +37,8 @@ class Ghost
         catch e
             @usage "Error: invoice definition '#{@args._[0]}' could not be parsed: #{e}"
 
-        if not fs.isFile @args.template
-            throw "Given template '#{@args.template}' can not be read."
+        if not fs.isDirectory @args.template
+            throw "Given template '#{@args.template}' can not be read or is no directory."
             
         templateEngine = new MustacheTemplateEngine(
             @args.template
@@ -50,9 +50,13 @@ class Ghost
             'A4'
         )
 
-        renderer.renderTo "#{@args.output}/#{util.basename invoiceFile, ".json"}"
+        renderer.renderTo(
+            "#{@args.output}/#{util.basename invoiceFile, ".json"}",
+            () ->
+                templateEngine.cleanup()
+                phantom.exit 0
+        )
 
-        phantom.exit 0
 
     # Display usage information and exit with errorcode 1
     # Optionally an error message may be provided as first argument, which will
@@ -66,7 +70,7 @@ class Ghost
         console.log ""
         console.log "Options:"
         console.log "  -h/--help: Display this usage information"
-        console.log "  -t/--template: Specify a template file to be used for rendering the invoice html"
+        console.log "  -t/--template: Specify a template directory to be used for rendering the invoice html"
         console.log "  -o/--output: Output directory to be used for the created invoice (default: cwd)"
         phantom.exit 1
 

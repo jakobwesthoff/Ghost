@@ -12,21 +12,18 @@ class PhantomPageRenderer
             format: @pagesize
             orientation: 'portrait'
             border: @border
-        @page.libraryPath = fs.absolute(
-            @engine.filepath.substring(
-                0,
-                @engine.filepath.lastIndexOf(
-                    fs.separator
-                )
-            )
-        )
-        console.log( @page.libraryPath )
 
     # Render the given invoice context using the given template to the given
-    # filepath as a PDF file
-    renderTo: ( filepath ) ->
-        @page.content = @engine.process @context
-        @page.render "#{filepath}.pdf",
+    # filepath as a PDF file. The provided callback will be executed once the
+    # rendering is complete
+    renderTo: ( filepath, callback ) ->
+        processedFile = @engine.process @context
+        @page.open(
+            processedFile,
+            ( status ) =>
+                @page.render "#{filepath}.pdf"
+                callback()
+        )
 
 # Export public symbols
 module.exports = PhantomPageRenderer
