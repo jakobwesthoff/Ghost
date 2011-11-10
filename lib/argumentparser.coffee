@@ -86,6 +86,9 @@ class ArgumentParser
             )
         )
 
+        # Preinitialize the arguments array
+        @_ = []
+
         # Preinitialize all optional options
         for option in @options
             if option.default?
