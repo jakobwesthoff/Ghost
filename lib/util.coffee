@@ -30,10 +30,21 @@ basename = ( filepath, extension = null ) ->
 tempdir = ( directory = "/tmp" ) ->
     while true
         tempdirectory = "#{directory}/#{uuidgen()}"
-        if fs.makeDirectory( tempdirectory ) is true
-            break
+        return tempdirectory if fs.makeDirectory( tempdirectory ) is true
 
-    return tempdirectory
+# Create a temporary file and return its name
+# By default the file will be created inside the '/tmp' directory
+# The first argument given to the function however may specify an alternative
+# directory.
+# Furthermore a filename suffix may be requested using the second argument
+tempfile = ( directory = "/tmp", suffix = "" ) ->
+    while true
+        tempfile = "#{directory}/#{uuidgen()}#{suffix}"
+        # The create operation is not atomic :( But I don't see any way of
+        # realizing this in phantomjs
+        if fs.exists( tempfile ) isnt true
+            fs.touch tempfile
+            return tempfile
 
 # Generate a UUID id based on the v4 specification
 # Quite elegant UUID code taken from:
@@ -52,4 +63,5 @@ uuidgen = () ->
 exports.dirname = dirname
 exports.basename = basename
 exports.tempdir = tempdir
+exports.tempfile = tempfile
 exports.uuidgen = uuidgen
