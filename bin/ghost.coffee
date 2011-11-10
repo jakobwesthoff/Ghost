@@ -123,7 +123,7 @@ try
     app.run()
 catch e
     if e.message?
-        console.log "Fatal error: #{e.message)}"
+        console.log "Fatal error: #{e.message}"
     else
         console.log "Fatal error: #{JSON.stringify(e)}"
     phantom.exit 255
