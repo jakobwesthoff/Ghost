@@ -24,7 +24,32 @@ basename = ( filepath, extension = null ) ->
 
     return base
 
+# Create a temporary directory
+# By default a directory inside the '/tmp' folder will be created you may
+# however provide an argument to the function provinding an alternative path
+tempdir = ( directory = "/tmp" ) ->
+    while true
+        tempdirectory = "#{directory}/#{uuigen()}"
+        if fs.makeDirectory( tempdirectory ) is true
+            break
+
+    return tempdirectory
+
+# Generate a UUID id based on the v4 specification
+# Quite elegant UUID code taken from:
+# http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
+# and converted to coffee script
+uuidgen = () ->
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+        /[xy]/g,
+        ( c ) ->
+            r = Math.random()*16|0
+            v = if ( c == 'x' ) then r else ( r & 0x3 | 0x8 )
+            v.toString(16)
+    )
 
 # Export all public symbols
 exports.dirname = dirname
 exports.basename = basename
+exports.tempdir = tempdir
+exports.uuidgen = uuidgen
