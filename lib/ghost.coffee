@@ -2,6 +2,7 @@ ArgumentParser = require "argumentparser"
 MustacheTemplateEngine = require "engines/mustache"
 PhantomPageRenderer = require "renderer/phantompage"
 
+util = require "util"
 fs = require "fs"
 
 # Main application entry point
@@ -49,7 +50,7 @@ class Ghost
             'A4'
         )
 
-        renderer.renderTo "#{@args.output}/#{@basename invoiceFile, ".json"}"
+        renderer.renderTo "#{@args.output}/#{util.basename invoiceFile, ".json"}"
 
         phantom.exit 0
 
@@ -68,21 +69,6 @@ class Ghost
         console.log "  -t/--template: Specify a template file to be used for rendering the invoice html"
         console.log "  -o/--output: Output directory to be used for the created invoice (default: cwd)"
         phantom.exit 1
-
-    # Extract the basename from a given filepath optionally removing the given
-    # extension as well
-    basename: ( filepath, extension = null ) ->
-        position = filepath.lastIndexOf fs.separator
-        if position is -1
-            base = filepath
-        else
-            base = filepath.substring position + 1
-
-        if extension isnt null
-            if base.substring( base.length - 1 - extension.length ) is extension
-                base = base.substring( 0, -1 * extension.length )
-
-        return base
 
 # Export the Ghost class as the only accessible public object from this module
 module.exports = Ghost
