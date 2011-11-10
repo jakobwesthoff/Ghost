@@ -29,7 +29,7 @@ basename = ( filepath, extension = null ) ->
 # however provide an argument to the function provinding an alternative path
 tempdir = ( directory = "/tmp" ) ->
     while true
-        tempdirectory = "#{directory}/#{uuigen()}"
+        tempdirectory = "#{directory}/#{uuidgen()}"
         if fs.makeDirectory( tempdirectory ) is true
             break
 
