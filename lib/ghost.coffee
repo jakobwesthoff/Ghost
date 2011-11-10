@@ -19,6 +19,7 @@ class Ghost
                 { short: 'h', long: 'help', default: false },
                 { short: 't', long: 'template', data: true },
                 { short: 'o', long: 'output', data: true, default: fs.workingDirectory }
+                { short: 'b', long: 'border', data: true, default: '0mm' }
             ])
         catch e
             @usage "Error: #{e}"
@@ -47,7 +48,8 @@ class Ghost
         renderer = new PhantomPageRenderer(
             templateEngine,
             invoice,
-            'A4'
+            'A4',
+            @args.border
         )
 
         renderer.renderTo(
@@ -62,7 +64,7 @@ class Ghost
     # Optionally an error message may be provided as first argument, which will
     # be displayed between the application name and the usage information
     usage: ( msg = null ) ->
-        console.log "Ghost - HTML to PDF invoice creator"
+        console.log "Ghost - Template based HTML to PDF renderer"
         console.log msg if msg?
         console.log ""
         console.log "Usage:"
@@ -71,6 +73,7 @@ class Ghost
         console.log "Options:"
         console.log "  -h/--help: Display this usage information"
         console.log "  -t/--template: Specify a template directory to be used for rendering the invoice html"
+        console.log "  -b/--border: Page border to be used during rendering (default: 0mm)"
         console.log "  -o/--output: Output directory to be used for the created invoice (default: cwd)"
         phantom.exit 1
 
